@@ -43,7 +43,7 @@ What is Kickstart?
 
 Kickstart Guide:
 
-  TODO: The very first thing you should do is to run the command `:Tutor` in Neovim.
+  TODO The very first thing you should do is to run the command `:Tutor` in Neovim.
 
     If you don't know what this means, type the following:
       - <escape key>
@@ -579,8 +579,7 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- tsserver = {},
-        --
+        tsserver = {},
 
         lua_ls = {
           -- cmd = {...},
@@ -592,7 +591,7 @@ require('lazy').setup({
                 callSnippet = 'Replace',
               },
               -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
+              diagnostics = { disable = { 'missing-fields' } },
             },
           },
         },
@@ -611,6 +610,11 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'eslint_d', -- Used to format Js/Ts code
+        { 'flake8', version = '6.1.0' }, -- Used to format Python code
+        'autopep8',
+        'black',
+        'isort',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -623,6 +627,14 @@ require('lazy').setup({
             -- certain features of an LSP (for example, turning off formatting for tsserver)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
+          end,
+          ['pyright'] = function()
+            local lspconfig = require 'lspconfig'
+            lspconfig.pyright.setup {
+              settings = {
+                python = { analysis = { diagnosticMode = 'off', typeCheckingMode = 'off' } },
+              },
+            }
           end,
         },
       }
@@ -658,14 +670,20 @@ require('lazy').setup({
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
-        --
+        -- python = { 'isort', 'autopep8' },
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
-        -- javascript = { { "prettierd", "prettier" } },
+        javascript = { 'eslint_d' },
       },
     },
+    -- TODO need to configure the right rules to format else probject will be fucked
+    -- config = function(_, opts)
+    --   require('conform').formatters.autopep8 = {
+    --     prepend_args = { '--select=W292' },
+    --   }
+    --   require('conform').setup(opts)
+    -- end,
   },
-
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
