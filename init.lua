@@ -113,7 +113,7 @@ vim.opt.showmode = false
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
--- vim.opt.clipboard = 'unnamedplus'
+vim.opt.clipboard = 'unnamedplus'
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -538,8 +538,20 @@ require('lazy').setup({
                 vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
               end,
             })
+            vim.api.nvim_create_autocmd('LspAttach', {
+              group = vim.api.nvim_create_augroup('lsp_attach_disable_ruff_hover', { clear = true }),
+              callback = function()
+                if client == nil then
+                  return
+                end
+                if client.name == 'ruff' then
+                  -- Disable hover in favor of Pyright
+                  client.server_capabilities.hoverProvider = false
+                end
+              end,
+              desc = 'LSP: Disable hover capability from Ruff',
+            })
           end
-
           -- The following autocommand is used to enable inlay hints in your
           -- code, if the language server you are using supports them
           --
@@ -571,7 +583,9 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
+        -- ruff = {},
         pyright = {},
+        -- zls = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -611,10 +625,6 @@ require('lazy').setup({
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'eslint_d', -- Used to format Js/Ts code
-        { 'flake8', version = '6.1.0' }, -- Used to format Python code
-        'autopep8',
-        'black',
-        'isort',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -632,7 +642,17 @@ require('lazy').setup({
             local lspconfig = require 'lspconfig'
             lspconfig.pyright.setup {
               settings = {
-                python = { analysis = { diagnosticMode = 'off', typeCheckingMode = 'off' } },
+                pyright = {
+                  -- Using Ruff's import organizer
+                  disableOrganizeImports = true,
+                },
+                python = {
+                  analysis = {
+                    autoSearchPaths = true,
+                    -- Ignore all files for analysis to exclusively use Ruff for linting
+                    ignore = { '*' },
+                  },
+                },
               },
             }
           end,
@@ -673,6 +693,7 @@ require('lazy').setup({
         -- python = { 'isort', 'autopep8' },
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
+        python = { 'ruff' },
         javascript = { 'eslint_d' },
       },
     },
