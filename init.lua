@@ -583,7 +583,7 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- ruff = {},
+        ruff = {},
         pyright = {},
         -- zls = {},
         -- rust_analyzer = {},
@@ -624,7 +624,7 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
-        'eslint_d', -- Used to format Js/Ts code
+        'eslint_d',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -688,22 +688,10 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
-        -- python = { 'isort', 'autopep8' },
-        -- You can use a sub-list to tell conform to run *until* a formatter
-        -- is found.
-        python = { 'ruff' },
+        python = { 'ruff_format', 'ruff_fix' },
         javascript = { 'eslint_d' },
       },
     },
-    -- TODO need to configure the right rules to format else probject will be fucked
-    -- config = function(_, opts)
-    --   require('conform').formatters.autopep8 = {
-    --     prepend_args = { '--select=W292' },
-    --   }
-    --   require('conform').setup(opts)
-    -- end,
   },
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
