@@ -1,4 +1,7 @@
 return {
+  -- NOTE: right now harpoon is broken when trying to open files that have swap
+  -- potential fix was introduces in https://github.com/ThePrimeagen/harpoon/pull/575
+  -- I have manually changed it in my config
 
   -- Marks for navigating your project
   'ThePrimeagen/harpoon',
