@@ -41,6 +41,8 @@ return {
     local luasnip = require 'luasnip'
     luasnip.config.setup {}
 
+    -- HACK: to disable autocomplete by default
+    cmp.setup { enabled = false }
     cmp.setup {
       snippet = {
         expand = function(args)
