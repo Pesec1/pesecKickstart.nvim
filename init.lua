@@ -168,6 +168,11 @@ vim.diagnostic.config { virtual_text = false, underline = false, signs = false }
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
+-- Delete marks in current buffer
+vim.keymap.set('n', '<leader>cm', '<cmd>delm!<CR>')
+-- Delete marks in files
+vim.keymap.set('n', '<leader>cM', '<cmd>delm A-Z0-9<CR>')
+
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })

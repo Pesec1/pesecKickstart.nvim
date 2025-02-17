@@ -74,6 +74,10 @@ return {
         --  the definition of its *type*, not where it was *defined*.
         map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
 
+        -- Search marks set with default vim keybind m + aA-zZ.
+        --  Useful when you want to jump between defenition and files
+        map('<leader>m', require('telescope.builtin').marks, 'Type [M]arks')
+
         -- Fuzzy find all the symbols in your current document.
         --  Symbols are things like variables, functions, types, etc.
         map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
