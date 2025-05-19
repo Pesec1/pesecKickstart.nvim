@@ -43,6 +43,12 @@ return {
 
     -- HACK: to disable autocomplete by default
     cmp.setup { enabled = false }
+    cmp.setup.filetype({ 'sql' }, {
+      sources = {
+        { name = 'vim-dadbod-completion' },
+        { name = 'buffer' },
+      },
+    })
     cmp.setup {
       snippet = {
         expand = function(args)

@@ -135,6 +135,7 @@ return {
       -- This is the config that will be passed to nvim_open_win.
       -- Change values here to customize the layout
       override = function(conf)
+        conf.width = 70
         return conf
       end,
     },
@@ -188,10 +189,11 @@ return {
   },
   -- Optional dependencies
   -- dependencies = { { 'echasnovski/mini.icons', opts = {} } },
-  config = function()
-    require('oil').setup()
-    vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
-    vim.keymap.set('n', '<space>-', require('oil').toggle_float)
+  config = function(_, opts)
+    require('oil').setup(opts)
+    -- vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
+    vim.keymap.set('n', '-', require('oil').toggle_float, { desc = 'Open parent directory' })
+    -- vim.keymap.set('n', '<space>-', require('oil').toggle_float)
   end,
   dependencies = { 'nvim-tree/nvim-web-devicons' }, -- use if prefer nvim-web-devicons
 }
