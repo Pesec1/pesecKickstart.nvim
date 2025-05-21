@@ -6,4 +6,12 @@ return {
   keys = {
     { '<leader>u', "<cmd>lua require('undotree').toggle()<cr>" },
   },
+  init = function()
+    local undodir = vim.fn.expand '~/.undodir'
+    vim.fn.mkdir(undodir, 'p') -- create the directory if it doesn't exist
+
+    -- Enable persistent undo
+    vim.o.undofile = true
+    vim.o.undodir = undodir
+  end,
 }
