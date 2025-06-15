@@ -79,6 +79,7 @@ return {
       ['gx'] = 'actions.open_external',
       ['g.'] = 'actions.toggle_hidden',
       ['g\\'] = 'actions.toggle_trash',
+      ['<C-o>'] = 'actions.copy_to_system_clipboard',
     },
     -- Set to false to disable all of the above keymaps
     use_default_keymaps = true,
@@ -191,9 +192,9 @@ return {
   -- dependencies = { { 'echasnovski/mini.icons', opts = {} } },
   config = function(_, opts)
     require('oil').setup(opts)
-    -- vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
-    vim.keymap.set('n', '-', require('oil').toggle_float, { desc = 'Open parent directory' })
-    -- vim.keymap.set('n', '<space>-', require('oil').toggle_float)
+    vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
+    -- vim.keymap.set('n', '-', require('oil').toggle_float, { desc = 'Open parent directory' })
+    vim.keymap.set('n', '<space>-', require('oil').toggle_float)
   end,
   dependencies = { 'nvim-tree/nvim-web-devicons' }, -- use if prefer nvim-web-devicons
 }
